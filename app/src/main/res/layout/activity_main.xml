@@ -114,6 +114,7 @@
             android:layout_height="wrap_content"
             android:text="지출"/>
         <TextView
+            android:id="@+id/money_min"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="지출1"
@@ -124,6 +125,7 @@
             android:text="수입"
             android:layout_marginLeft="10dp"/>
         <TextView
+            android:id="@+id/money_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="수입1"
@@ -134,6 +136,7 @@
             android:text="총합"
             android:layout_marginLeft="10dp"/>
         <TextView
+            android:id="@+id/money_sum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="총합1"

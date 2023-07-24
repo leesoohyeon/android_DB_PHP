@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             } //onClick
         });
         getData();
+        getsumData();
     }
 
     public void getData(){
@@ -121,5 +123,50 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonArrayRequest);
     }
 
+    public void getsumData(){
+        System.out.println("서버 실행확인1");
+        // 서버 주소
+        String serverUrl = "http://219.248.38.128/AccountBook_sum.php";
+
+
+        // 결과를 JsonArray 받을 것이므로
+        // StringRequest가 아니라
+        // JsonArrayRequest를 이용할 것임
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.POST, serverUrl, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                System.out.println("서버 실행확인2");
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        String date = jsonObject.getString("in_date");
+                        String sum = jsonObject.getString("sum");
+                        String min = jsonObject.getString("min");
+                        String plus = jsonObject.getString("plus");
+                        TextView tvsum = (TextView) findViewById(R.id.money_sum);
+                        TextView tvmin = (TextView) findViewById(R.id.money_min);
+                        TextView tvplus = (TextView) findViewById(R.id.money_plus);
+                        tvsum.setText(sum);
+                        tvmin.setText(min);
+                        tvplus.setText(plus);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this,"ERROR",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // 실제 요청 작업을 수행해주는 요청큐 객체 생성
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+//
+//        // 요청큐에 요청 객체 생성
+        requestQueue.add(jsonArrayRequest);
+    }
 
 }
