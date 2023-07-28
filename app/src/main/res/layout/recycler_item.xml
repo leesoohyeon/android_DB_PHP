@@ -16,20 +16,20 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="지출구분" />
+        <TextView
+            android:id="@+id/money"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="금액" />
 
         <TextView
             android:id="@+id/memo"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="메모" />
 
-        <TextView
-            android:id="@+id/money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="금액" />
     </LinearLayout>
 
 
