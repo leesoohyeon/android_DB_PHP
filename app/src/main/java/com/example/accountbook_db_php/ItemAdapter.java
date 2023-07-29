@@ -35,8 +35,12 @@ public class ItemAdapter extends RecyclerView.Adapter {
         VH vh = (VH) holder;
         ItemData item = items.get(position);
         vh.tvMoney.setText(String.valueOf(item.getMoney()));
-        vh.tvGubn.setText(item.getGubn());
         vh.tvMemo.setText(item.getMeno());
+        if(item.getGubn().equals("1")){
+            vh.tvGubn.setText("수입");
+        }else if(item.getGubn().equals("2")){
+            vh.tvGubn.setText("지출");
+        }
 
     }
 

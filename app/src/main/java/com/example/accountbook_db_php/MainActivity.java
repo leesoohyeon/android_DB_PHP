@@ -7,14 +7,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
     ItemAdapter adapter;
     String tvDate = new Unit().today();
     String Result_date = new Unit().today().replace("/","");
+    String gubn = "";
+    String rMemo = "";
+    String rMoney = "";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +64,46 @@ public class MainActivity extends AppCompatActivity {
         dateText = findViewById(R.id.dateText);
         dateText.setText(tvDate);
         Button datePickerBtn = findViewById(R.id.dateButton);
+        Button gubnBtn = findViewById(R.id.Btngubn);
+        Button insertBtn = findViewById(R.id.insertBtn);
+
+        insertBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(gubn.equals("선택")){
+                    Toast.makeText(MainActivity.this,"지출구분을 선택하여주세요.",Toast.LENGTH_SHORT);
+                    return;
+                }else{
+                    EditText etMemo = findViewById(R.id.etMemo);
+                    EditText etMoney = findViewById(R.id.etMoney);
+                    rMemo = String.valueOf(etMemo.getText());
+                    rMoney = String.valueOf(etMoney.getText());
+                    insertData();
+                }
+            }
+        });
+
+        gubnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final PopupMenu popupMenu = new PopupMenu(getApplicationContext(),v);
+                getMenuInflater().inflate(R.menu.popup,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if(item.getItemId() == R.id.menu_min){
+                            gubn = "2";
+                            gubnBtn.setText("지출");
+                        }else if(item.getItemId() == R.id.menu_plus){
+                            gubn = "1";
+                            gubnBtn.setText("수입");
+                        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
+            }
+        });
 
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new ItemAdapter(this, items);
@@ -77,17 +126,61 @@ public class MainActivity extends AppCompatActivity {
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         // 1월은 0부터 시작하기 때문에 +1을 해준다.
                         month = month +1;
-                        String date = year +"/" + month +"/"+dayOfMonth;
+                        String rMonth = "";
+                        if(month<10){
+                            rMonth = "0"+month;
+                        }else{
+                            rMonth = String.valueOf(month);
+                        }
+                        String date = year +"/" + rMonth +"/"+dayOfMonth;
                         dateText.setText(date);
-                        Result_date = String.valueOf(year + month + dayOfMonth);
-
+                        Result_date = String.valueOf(year) + rMonth + dayOfMonth;
+                        Toast.makeText(MainActivity.this,"달려실행확인",Toast.LENGTH_SHORT).show();
+                        getData();
+                        getsumData();
                     }
                 }, pYear,pMonth,pDay);
                 datePickerDialog.show();
-
             } //onClick
+
         });
 
+    }
+
+
+    public void insertData(){
+        System.out.println("저장 서버실행 확인");
+        String serverUrl = "http://222.104.195.229/AccountBook_insert.php";
+        StringRequest request = new StringRequest(Request.Method.POST, serverUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MainActivity.this,"입력완료",Toast.LENGTH_SHORT).show();
+                        getData();
+                        getsumData();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this,"ERROR",Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap();
+
+                params.put("date",Result_date);
+                params.put("memo",rMemo);
+                params.put("gubn",gubn);
+                params.put("money",rMoney);
+
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        request.setShouldCache(false);
+        requestQueue.add(request);
     }
 
     public void getData(){
@@ -99,6 +192,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         System.out.println("서버 실행확인2");
+                        System.out.println(serverUrl);
+                        System.out.println(Result_date);
                         Log.d("GSON 응답 ",response);
                         items.clear();
                         adapter.notifyDataSetChanged();
@@ -131,7 +226,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap();
-                params.put("date","20230723");
+                params.put("date",Result_date);
                 return params;
             }
         };
@@ -150,7 +245,10 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        System.out.println("서버 실행확인2");
+                        System.out.println("sum서버 실행확인2");
+                        System.out.println(serverUrl);
+                        System.out.println(Result_date);
+
                         Log.d("GSON 응답 ",response);
                         try{
                             Log.d("GSON 응답 ","실행확인222");
@@ -184,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap();
-                params.put("date","20230723");
+                params.put("date",Result_date);
                 return params;
             }
         };
