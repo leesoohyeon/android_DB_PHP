@@ -4,12 +4,24 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ItemAdapter extends RecyclerView.Adapter {
     Context context;
@@ -41,6 +53,41 @@ public class ItemAdapter extends RecyclerView.Adapter {
         }else if(item.getGubn().equals("2")){
             vh.tvGubn.setText("지출");
         }
+        vh.delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("저장 서버실행 확인");
+                String serverUrl = "http://222.104.195.229/AccountBook_delete.php";
+                StringRequest request = new StringRequest(Request.Method.POST, serverUrl,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                ((MainActivity)MainActivity.mContext).getsumData();
+                                ((MainActivity)MainActivity.mContext).getData();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }){
+                    @Nullable
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap();
+
+                        params.put("date",item.getIn_date());
+                        params.put("seq", String.valueOf(item.getSeq()));
+
+
+                        return params;
+                    }
+                };
+                RequestQueue requestQueue = Volley.newRequestQueue(context);
+                request.setShouldCache(false);
+                requestQueue.add(request);
+            }
+        });
 
     }
 
@@ -54,12 +101,14 @@ public class ItemAdapter extends RecyclerView.Adapter {
         TextView tvMemo;
         TextView tvGubn;
         TextView tvMoney;
+        Button delBtn;
 
         public VH(@NonNull View itemView) {
             super(itemView);
             tvMemo = itemView.findViewById(R.id.memo);
             tvGubn = itemView.findViewById(R.id.gubn);
             tvMoney = itemView.findViewById(R.id.money);
+            delBtn = itemView.findViewById(R.id.delBtn);
         }
     }
 

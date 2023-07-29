@@ -5,19 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,12 +23,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -42,6 +36,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static Context mContext;
     TextView dateText;
     DatePickerDialog datePickerDialog;
     RecyclerView recyclerView;
@@ -66,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         Button datePickerBtn = findViewById(R.id.dateButton);
         Button gubnBtn = findViewById(R.id.Btngubn);
         Button insertBtn = findViewById(R.id.insertBtn);
-
+        mContext = this;
         insertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     public void getData(){
         System.out.println("서버 실행확인1");
         // 서버 주소
-        String serverUrl = "http://222.104.195.229/PHP_connection.php";
+        String serverUrl = "http://222.104.195.229/AccountBook_select.php";
         StringRequest request = new StringRequest(Request.Method.POST, serverUrl,
                 new Response.Listener<String>() {
                     @Override
