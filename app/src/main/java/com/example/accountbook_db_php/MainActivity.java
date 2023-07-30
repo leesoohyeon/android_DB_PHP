@@ -2,6 +2,7 @@ package com.example.accountbook_db_php;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d("dddddd",tvDate);
-        Log.d("dddddd",Result_date);
         dateText = findViewById(R.id.dateText);
         dateText.setText(tvDate);
         Button datePickerBtn = findViewById(R.id.dateButton);
@@ -130,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                         String date = year +"/" + rMonth +"/"+dayOfMonth;
                         dateText.setText(date);
                         Result_date = String.valueOf(year) + rMonth + dayOfMonth;
-                        Toast.makeText(MainActivity.this,"달려실행확인",Toast.LENGTH_SHORT).show();
                         getData();
                         getsumData();
                     }
@@ -186,14 +184,9 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        System.out.println("서버 실행확인2");
-                        System.out.println(serverUrl);
-                        System.out.println(Result_date);
-                        Log.d("GSON 응답 ",response);
                         items.clear();
                         adapter.notifyDataSetChanged();
                         try{
-                            Log.d("GSON 응답 ","실행확인222");
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i = 0; i<jsonArray.length(); i++){
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -232,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getsumData(){
-        System.out.println("서버 실행확인1");
         // 서버 주소
         String serverUrl = "http://222.104.195.229/AccountBook_sum.php";
 
@@ -240,17 +232,10 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        System.out.println("sum서버 실행확인2");
-                        System.out.println(serverUrl);
-                        System.out.println(Result_date);
-
-                        Log.d("GSON 응답 ",response);
                         try{
-                            Log.d("GSON 응답 ","실행확인222");
                             JSONArray jsonArray = new JSONArray(response);
                             for(int i = 0; i<jsonArray.length(); i++){
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                Log.d("GSON 응답 ",jsonObject.getString("sum"));
                                 String sum = jsonObject.getString("sum");
                                 String min = jsonObject.getString("min");
                                 String plus = jsonObject.getString("plus");

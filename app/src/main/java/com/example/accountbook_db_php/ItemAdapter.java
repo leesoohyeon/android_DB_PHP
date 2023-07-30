@@ -1,6 +1,7 @@
 package com.example.accountbook_db_php;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
@@ -50,8 +52,10 @@ public class ItemAdapter extends RecyclerView.Adapter {
         vh.tvMemo.setText(item.getMeno());
         if(item.getGubn().equals("1")){
             vh.tvGubn.setText("수입");
+            vh.itembg.setBackgroundColor(Color.parseColor("#96FFFF"));
         }else if(item.getGubn().equals("2")){
             vh.tvGubn.setText("지출");
+            vh.itembg.setBackgroundColor(Color.parseColor("#DC6089"));
         }
         vh.delBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +106,7 @@ public class ItemAdapter extends RecyclerView.Adapter {
         TextView tvGubn;
         TextView tvMoney;
         Button delBtn;
+        ConstraintLayout itembg;
 
         public VH(@NonNull View itemView) {
             super(itemView);
@@ -109,6 +114,7 @@ public class ItemAdapter extends RecyclerView.Adapter {
             tvGubn = itemView.findViewById(R.id.gubn);
             tvMoney = itemView.findViewById(R.id.money);
             delBtn = itemView.findViewById(R.id.delBtn);
+            itembg = itemView.findViewById(R.id.itembg);
         }
     }
 
