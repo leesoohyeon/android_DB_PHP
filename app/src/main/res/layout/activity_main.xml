@@ -33,7 +33,7 @@
                 android:id="@+id/dateButton"
                 android:layout_width="80dp"
                 android:layout_height="50dp"
-                android:text="날짜"
+                android:background="@drawable/calendar"
                 android:layout_marginLeft="20dp" />
         </LinearLayout>
 
@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="지출1" />
+            android:text="0" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -150,7 +150,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="수입1" />
+            android:text="0" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -163,7 +163,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="총합1" />
+            android:text="0" />
 
     </LinearLayout>
 
