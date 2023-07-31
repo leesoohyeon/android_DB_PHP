@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
                     EditText etMoney = findViewById(R.id.etMoney);
                     rMemo = String.valueOf(etMemo.getText());
                     rMoney = String.valueOf(etMoney.getText());
+                    etMemo.setText(null);
+                    etMoney.setText(null);
+                    gubnBtn.setText("선택");
                     insertData();
                 }
             }
