@@ -143,9 +143,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    // 데이터 입력 함수
     public void insertData(){
-        System.out.println("저장 서버실행 확인");
         String serverUrl = "http://222.104.195.229/AccountBook_insert.php";
         StringRequest request = new StringRequest(Request.Method.POST, serverUrl,
                 new Response.Listener<String>() {
@@ -179,8 +178,8 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(request);
     }
 
+    // RecyclerView 데이터 불러오기
     public void getData(){
-        System.out.println("서버 실행확인1");
         // 서버 주소
         String serverUrl = "http://222.104.195.229/AccountBook_select.php";
         StringRequest request = new StringRequest(Request.Method.POST, serverUrl,
@@ -227,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // 합계 데이터 불러오는 함수
     public void getsumData(){
         // 서버 주소
         String serverUrl = "http://222.104.195.229/AccountBook_sum.php";
